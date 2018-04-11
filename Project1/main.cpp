@@ -31,7 +31,7 @@ public:
 	ParticleSystem(unsigned int count, int angle, int speed, int lifetime) :
 		m_particles(count),
 		m_vertices(sf::Quads, count),
-		m_lifetime(sf::seconds(3)),
+		m_lifetime(sf::seconds(lifetime)),
 		m_emitter(0, 0),
 		m_angle(angle),
 		m_speed(speed)
