@@ -5,6 +5,7 @@
 #include <SFML/System.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Main.hpp>
+#include <iostream>
 
 using namespace std;
 using namespace sf;
@@ -14,6 +15,7 @@ struct Particle
 	sf::Vector2f velocity;
 	sf::Time lifetime;
 	RectangleShape r;
+	float angle;
 };
 
 class ParticleSystem : public sf::Drawable, public sf::Transformable
@@ -29,7 +31,8 @@ public:
 		m_speed(speed)
 
 	{
-		//texture1 = texture;
+		texture1 = texture;
+		texture2 = texture;
 	}
 
 
@@ -50,6 +53,9 @@ public:
 			if (p.lifetime <= sf::Time::Zero)
 				resetParticle(i);
 
+
+
+
 			// update the position of the corresponding vertex
 			//m_particles[i].velocity += p.velocity * elapsed.asSeconds();
 			m_particles[i].r.move(m_particles[i].velocity * elapsed.asSeconds());
@@ -58,9 +64,18 @@ public:
 			float ratio = p.lifetime.asSeconds() / m_lifetime.asSeconds();
 			//m_vertices[i].color.a = static_cast<sf::Uint8>(ratio * 255);
 
-			float scale = start_size + ((m_lifetime.asSeconds() - m_particles[i].lifetime.asSeconds()) / m_lifetime.asSeconds()) * final_size;
+			float scale = start_size + ((m_lifetime.asSeconds() - m_particles[i].lifetime.asSeconds()) / m_lifetime.asSeconds()) * (final_size - start_size);
 			m_particles[i].r.setSize(Vector2f(scale, scale));
 				//size = start_size + ((lifetime-current_time)/lifetime)*final_size)
+
+				//float speed = start_speed + ((m_lifetime.asSeconds() - m_particles[i].lifetime.asSeconds()) / m_lifetime.asSeconds()) * (final_speed - start_speed);
+				////std::cout << speed << std::endl;
+				//m_particles[i].velocity.x = std::cos(m_particles[i].angle) * speed;
+				//m_particles[i].velocity.y = std::sin(m_particles[i].angle) * speed;
+
+			p.velocity.x = p.velocity.x * 1.01f;
+			p.velocity.y = p.velocity.y * 1.01f;
+			p.velocity = Vector2f(p.velocity.x, p.velocity.y);
 
 		}
 	}
@@ -98,7 +113,7 @@ public:
 		float speed = (std::rand() % m_speed) + m_speed;
 		m_particles[index].velocity = sf::Vector2f(std::cos(angle) * speed, std::sin(angle) * speed);
 		m_particles[index].lifetime = m_lifetime - milliseconds((std::rand() % 2000));
-
+		m_particles[index].angle = angle;
 		// reset the position of the corresponding vertex
 		//m_vertices[index].position = m_emitter;
 
@@ -118,8 +133,8 @@ public:
 	int m_speed;
 	float start_size = 10;
 	float final_size = 50;
-	float start_speed = 20;
-	float final_speed = 5;
+	float start_speed = 30;
+	float final_speed = 200;
 };
 
 
@@ -135,8 +150,8 @@ int main()
 	texture2.loadFromFile("fire2.png");
 
 	// create the particle system
-	ParticleSystem particles1(200, 200, 50, 5, texture1);
-	ParticleSystem particles2(500, 100, 30, 3, texture2);
+	ParticleSystem particles1(200, 200, 10, 5, texture1);
+	ParticleSystem particles2(300, 100, 30, 3, texture2);
 
 	//position
 	particles1.setEmitter(Vector2f(200, 400));
