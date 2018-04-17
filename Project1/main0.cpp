@@ -7,6 +7,7 @@
 #include <SFML/Main.hpp>
 #include <iostream>
 #include "Particle.h"
+#include "ParticleSystem.h"
 
 using namespace std;
 using namespace sf;
@@ -17,7 +18,7 @@ vector<Texture> textures;
 
 int main()
 {
-	RenderWindow window(sf::VideoMode(800, 600), "Particles");
+	RenderWindow window(sf::VideoMode(1200, 800), "Particles");
 	Clock clock;
 
 
@@ -27,9 +28,10 @@ int main()
 	textures[0].loadFromFile("fire1.png");
 	textures[1].loadFromFile("fire2.png");
 
-	Particle particle(Vector2f(400.f,300.f), Vector2f(0.1f, 0.1f), Vector2f(100.f, 100.f)/*, Vector2f(5.f, 10.f), 300*/, 2.0f, 0);
-
-
+	//Particle particle(Vector2f(400.f,300.f), Vector2f(0.1f, 0.1f), Vector2f(100.f, 100.f)/*, Vector2f(5.f, 10.f), 300*/, 2.0f, 0);
+	ParticleSystem particles(Vector2f(600.0f, 400.0f), 0.01f, 100.0f, 10.0f, 30.0f,/* 60.0f,*/ 0);
+	//ParticleSystem(Vector2f emitter, float rate, float ParticleSize, float ang, float minVelocity, float maxVelocity, int texture)
+	
 	while (window.isOpen())
 	{
 		Event event;
@@ -44,10 +46,12 @@ int main()
 		Time elapsed = clock.restart();
 
 
-			particle.update();
+			//particle.update();
+		particles.update();
 
 		window.clear();
-		particle.draw(window);
+		//particle.draw(window);
+		particles.draw(window);
 		window.display();
 
 	}
