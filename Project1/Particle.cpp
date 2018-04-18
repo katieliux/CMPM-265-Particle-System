@@ -1,4 +1,5 @@
 #include "Particle.h"
+#include "curves.h"
 
 Particle::Particle(Vector2f start_position, Vector2f velocity, Vector2f size, float angle, float lifetime, float rotation, int behavior, int curves, int texture)
 {
@@ -50,34 +51,6 @@ Particle::~Particle()
 }
 
 
-
-float easeInOutSine(float t, float b, float c, float d)
-{
-	return -c / 2 * (cos(3.14 * t / d) - 1) + b;
-};
-
-
-float easeInOutCirc(float t, float b, float c, float d)
-{
-	t /= d / 2;
-	if (t < 1) return -c / 2 * (sqrt(1 - t*t) - 1) + b;
-	t -= 2;
-	return c / 2 * (sqrt(1 - t*t) + 1) + b;
-};
-
-
-float easeInQuart(float t, float b, float c, float d)
-{
-	t /= d;
-	return c*t*t*t*t + b;
-};
-
-float easeOut(float t, float b, float c, float d) 
-{
-	return c*t / d + b;
-}
-
-
 void Particle::update()
 {
 	//float scale = start_size + ((m_lifetime.asSeconds() - m_particles[i].lifetime.asSeconds()) / m_lifetime.asSeconds()) * (final_size - start_size);
@@ -94,28 +67,28 @@ void Particle::update()
 		velocity = start_velocity + (/*lifetime - */m_lifetime / lifetime) * (final_velocity - start_velocity)/*final_velocity*/;
 		break;
 	case 1:
-		size.x = easeInOutCirc(m_lifetime, start_size.x, final_size.x, lifetime);
-		size.y = easeInOutCirc(m_lifetime, start_size.y, final_size.y, lifetime);
-		velocity.x = easeInOutCirc(m_lifetime, start_velocity.x, final_velocity.x, lifetime);
-		velocity.y = easeInOutCirc(m_lifetime, start_velocity.y, final_velocity.y, lifetime);
+		size.x = Circ::easeInOut(m_lifetime, start_size.x, final_size.x, lifetime);
+		size.y = Circ::easeInOut(m_lifetime, start_size.y, final_size.y, lifetime);
+		velocity.x = Circ::easeInOut(m_lifetime, start_velocity.x, final_velocity.x, lifetime);
+		velocity.y = Circ::easeInOut(m_lifetime, start_velocity.y, final_velocity.y, lifetime);
 		break;
 	case 2:
-		size.x = easeInOutSine(m_lifetime, start_size.x, final_size.x, lifetime);
-		size.y = easeInOutSine(m_lifetime, start_size.y, final_size.y, lifetime);
-		velocity.x = easeInOutSine(m_lifetime, start_velocity.x, final_velocity.x, lifetime);
-		velocity.y = easeInOutSine(m_lifetime, start_velocity.y, final_velocity.y, lifetime);
+		size.x = Sine::easeInOut(m_lifetime, start_size.x, final_size.x, lifetime);
+		size.y = Sine::easeInOut(m_lifetime, start_size.y, final_size.y, lifetime);
+		velocity.x = Sine::easeInOut(m_lifetime, start_velocity.x, final_velocity.x, lifetime);
+		velocity.y = Sine::easeInOut(m_lifetime, start_velocity.y, final_velocity.y, lifetime);
 		break;
 	case 3:
-		size.x = easeInQuart(m_lifetime, start_size.x, final_size.x, lifetime);
-		size.y = easeInQuart(m_lifetime, start_size.y, final_size.y, lifetime);
-		velocity.x = easeInQuart(m_lifetime, start_velocity.x, final_velocity.x, lifetime);
-		velocity.y = easeInQuart(m_lifetime, start_velocity.y, final_velocity.y, lifetime);
+		size.x = Quart::easeIn(m_lifetime, start_size.x, final_size.x, lifetime);
+		size.y = Quart::easeIn(m_lifetime, start_size.y, final_size.y, lifetime);
+		velocity.x = Quart::easeIn(m_lifetime, start_velocity.x, final_velocity.x, lifetime);
+		velocity.y = Quart::easeIn(m_lifetime, start_velocity.y, final_velocity.y, lifetime);
 	}
 
 	r.setSize(size);
 	position += velocity;
 	r.setPosition(position);
-	rotation = easeOut(m_lifetime, 0, 180, lifetime);
+	rotation = Linear::easeInOut(m_lifetime, 0, 180, lifetime);
 	r.setRotation(rotation);
 
 	if (m_lifetime >= lifetime)
