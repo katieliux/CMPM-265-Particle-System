@@ -26,7 +26,7 @@ Particle* ParticleSystem::addParticle()
 {
 	//float vel = rand() % (int)((maxVelocity * 10.0f) - (minVelocity * 10.0f)) / 10.0f + m_lifetime;
 	Vector2f size = Vector2f(ParticleSize, ParticleSize);
-	float angle = ((rand() % 90) + ang) * 3.14f / 180.f;
+	float angle = ((rand() % 360) + ang) * 3.14f / 180.f;
 	float vel = rand() % 3 * 0.003f + start_Velocity;
 	Vector2f velocity = Vector2f(vel * cos(angle), vel * sin(angle));
 	//float angle =  rand() % 314 * 0.01f;
@@ -63,7 +63,7 @@ void ParticleSystem::update()
 		count--;
 		cout << "---" << endl;
 	}
-
+	
 
 	for (Particle* p : particles)
 	{

@@ -72,6 +72,10 @@ float easeInQuart(float t, float b, float c, float d)
 	return c*t*t*t*t + b;
 };
 
+float easeOut(float t, float b, float c, float d) 
+{
+	return c*t / d + b;
+}
 
 
 void Particle::update()
@@ -111,6 +115,7 @@ void Particle::update()
 	r.setSize(size);
 	position += velocity;
 	r.setPosition(position);
+	rotation = easeOut(m_lifetime, 0, 180, lifetime);
 	r.setRotation(rotation);
 
 	if (m_lifetime >= lifetime)
