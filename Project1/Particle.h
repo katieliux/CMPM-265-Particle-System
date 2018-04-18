@@ -16,7 +16,7 @@ extern vector<Texture> textures;
 class Particle
 {
 public:
-	Particle(Vector2f start_position, Vector2f velocity, Vector2f size, float angle, float lifetime/*, float rotation, vector<behavior> behavior*/, int texture);
+	Particle(Vector2f start_position, Vector2f velocity, Vector2f size, float angle, float lifetime, float rotation, int behavior, int curves, int texture);
 	~Particle();
 
 	RectangleShape r;
@@ -34,7 +34,9 @@ public:
 	float m_lifetime;
 	Clock clock;
 	bool alive;
-	//vector<behavior> behavior;
+	int behavior;
+	int curves;
+	float rotation;
 
 	void update();
 	void draw(RenderWindow &window);

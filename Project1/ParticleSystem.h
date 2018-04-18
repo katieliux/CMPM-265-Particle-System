@@ -1,11 +1,11 @@
 #pragma once
-#include <sfml/graphics.hpp>
-#include <sfml/window.hpp>
-#include <sfml/audio.hpp>
-#include <sfml/network.hpp>
-#include <sfml/system.hpp>
-#include <sfml/opengl.hpp>
-#include <sfml/main.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
+#include <SFML/System.hpp>
+#include <SFML/OpenGL.hpp>
+#include <SFML/Main.hpp>
 #include <iostream>
 #include "Particle.h"
 
@@ -21,15 +21,18 @@ public:
 	float ParticleSize;
 	float rate;
 	float m_lifetime;
-	float minVelocity;
-	//float maxVelocity;
+	float start_Velocity;
 	float ang;
 	int texture;
 	Clock clock;
 	float KeyPressed;
+	int count;
+	int behavior;
+	int curves;
+	float rotation;
 
 
-	 ParticleSystem(Vector2f emitter, float rate, float ParticleSize, float ang , float minVelocity, /*float maxVelocity,*/ int texture);
+	 ParticleSystem(Vector2f emitter, float rate, float ParticleSize, float ang , float start_Velocity, float rotation, int behavior, int curves, int texture);
 	~ ParticleSystem();
 
 
